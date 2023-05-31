@@ -27,6 +27,7 @@ function App() {
   // Keyboard functions
   const onSelectLetter = (keyValue) => {
     if (currentAttempt.letterPosition === 5) return
+    // Ensure that the key pressed is a letter
     const newBoard = [...board]
     newBoard[currentAttempt.attempt][currentAttempt.letterPosition] = keyValue
     setCurrentAttempt({ attempt: currentAttempt.attempt, letterPosition: currentAttempt.letterPosition + 1 })
@@ -54,6 +55,10 @@ function App() {
       setCurrentAttempt({ attempt: currentAttempt.attempt + 1, letterPosition: 0 })
     } else {
       alert("Word not found")
+    }
+
+    if (currentWord === correctWord) {
+      alert("You win!")
     }
     
   }

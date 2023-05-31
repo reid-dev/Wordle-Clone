@@ -21,10 +21,13 @@ function Keyboard() {
       onDelete()
     }
 
-    else if (key.match(/[A-Z]/)) {
-      onSelectLetter(key)
+    else {
+      // Check if Event.key is in keys1, keys2, or keys3
+      if (keys1.includes(key) || keys2.includes(key) || keys3.includes(key))
+        onSelectLetter(key)
     }
   })
+
   // Detect keypresses
   useEffect(() => {
     document.addEventListener('keydown', handleKeypress)
