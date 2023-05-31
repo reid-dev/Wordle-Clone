@@ -1,8 +1,8 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 
 import Board from './components/Board';
 import Keyboard from './components/Keyboard';
-import { boardDefault } from './components/Words'
+import { boardDefault, generateWordSet } from './components/Words'
 
 import './App.css';
 
@@ -13,6 +13,16 @@ function App() {
   // Create the board state
   const [board, setBoard] = useState(boardDefault)
   const [currentAttempt, setCurrentAttempt] = useState({ attempt: 0, letterPosition: 0 })
+  const [wordSet, setWordSet] = useState(new Set())
+
+  // Correct word
+  const correctWord = "APPLE"
+
+  useEffect(() => {
+    generateWordSet().then((words) => {
+      setWordSet(words.wordSet)
+    })
+  }, [])
 
   // Keyboard functions
   const onSelectLetter = (keyValue) => {
@@ -34,7 +44,18 @@ function App() {
   const onEnter = () => {
     // If the current position isn't 5, we don't want to do anything
     if (currentAttempt.letterPosition !== 5) return
-    setCurrentAttempt({ attempt: currentAttempt.attempt + 1, letterPosition: 0 })
+  
+    let currentWord = ""
+    board[currentAttempt.attempt].forEach((letter) => {
+      currentWord += letter
+    })
+
+    if (wordSet.has(currentWord.toLowerCase())) {
+      setCurrentAttempt({ attempt: currentAttempt.attempt + 1, letterPosition: 0 })
+    } else {
+      alert("Word not found")
+    }
+    
   }
 
   return (
@@ -42,7 +63,7 @@ function App() {
       <nav>
         <h1>Wordle</h1>
       </nav>
-      <AppContext.Provider value={{ board, setBoard, currentAttempt, setCurrentAttempt, onSelectLetter, onDelete, onEnter }}>
+      <AppContext.Provider value={{ board, setBoard, currentAttempt, setCurrentAttempt, onSelectLetter, onDelete, onEnter, correctWord }}>
         <div className="game">
           <Board />
           <Keyboard />
