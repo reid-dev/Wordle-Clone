@@ -8,7 +8,7 @@ function Keyboard() {
   const keys2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']
   const keys3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
   
-  const {onEnter, onDelete, onSelectLetter} = useContext(AppContext)
+  const {onEnter, onDelete, onSelectLetter, disabledLetters} = useContext(AppContext)
   // Handle keypresses
   const handleKeypress = useCallback((event) => {
     const key = event.key.toUpperCase()
@@ -40,18 +40,18 @@ function Keyboard() {
     <div className="keyboard" onKeyDown={handleKeypress}>
       <div className="line1">
         {keys1.map((key, index) => {
-          return <Key keyValue={key}/>
+          return <Key keyValue={key} disabled={disabledLetters.includes(key)}/>
         })}
       </div>
       <div className="line2">
       {keys2.map((key, index) => {
-          return <Key keyValue={key}/>
+          return <Key keyValue={key} disabled={disabledLetters.includes(key)}/>
         })}
       </div>
       <div className="line3">
         <Key keyValue={"ENTER"} bigKey/>
       {keys3.map((key, index) => {
-          return <Key keyValue={key}/>
+          return <Key keyValue={key} disabled={disabledLetters.includes(key)}/>
         })}
         <Key keyValue={"DELETE"} bigKey/>
       </div>
